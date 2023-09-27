@@ -1,0 +1,59 @@
+// This file is part of nand2tetris, as taught in The Hebrew University, and
+// was written by Aviv Yaish. It is an extension to the specifications given
+// [here](https://www.nand2tetris.org) (Shimon Schocken and Noam Nisan, 2017),
+// as allowed by the Creative Common Attribution-NonCommercial-ShareAlike 3.0
+// Unported [License](https://creativecommons.org/licenses/by-nc-sa/3.0/).
+
+
+// The ExtendAlu chip is an extension of the standard ALU which also supports
+// shift operations.
+// The inputs of the extended ALU are instruction[9], x[16], y[16].
+// The "ng" and "zr" output pins behave the same as in the regular ALU.
+// The "out" output is defined as follows:
+// If instruction[8]=1 and instruction[7]=1 the output is identical to the 
+// regular ALU, where:
+// instruction[5]=zx, instruction[4]=nx, ..., instruction[0]=no
+// Else, if instruction[8]=0 and instruction[7]=1, the output is a shift:
+// - If instruction[4] == 0, the input "y" will be shifted, otherwise "x".
+// - If instruction[5] == 0, the shift will be a right-shift, otherwise left.
+// - All other inputs are undefined.
+
+CHIP ExtendAlu {
+     IN x[16], y[16], instruction[9];
+     OUT out[16], zr, ng;
+     
+     PARTS:
+
+     // shift
+     Mux16(a=y, b=x, sel=instruction[4], out=inShift); // If instruction[4] == 0, the input "y" will be shifted, otherwise "x",
+     ShiftRight(in=inShift ,out=shiftR);
+     ShiftLeft(in=inShift ,out=shiftL);
+     Mux16(a=shiftR, b=shiftL, sel=instruction[5], out=reShift); // If instruction[5] == 0, the shift will be a right-shift, otherwise left.
+
+     // ALU
+     Mux16(a=y, b=false, sel=instruction[3], out=zyres);
+     Not16(in=zyres, out=yNot);
+     Mux16(a=zyres, b=yNot, sel=instruction[2], out=nyres);
+     And16(a=nyres, b=nxres, out=nyresAndnxres);
+
+     Mux16(a=x, b=false, sel=instruction[5], out=zxres);
+     Not16(in=zxres, out=xNot);
+     Mux16(a=zxres, b=xNot, sel=instruction[4], out=nxres);
+     Add16(a=nyres, b=nxres, out=nyresAddnxres);
+
+     Mux16(a=nyresAndnxres, b=nyresAddnxres, sel=instruction[1], out=fres);
+     Not16(in=fres, out=fresNot);
+     Mux16(a=fres, b=fresNot, sel=instruction[0], out=outALU);
+
+     // zr
+     Or8Way(in=subout1, out=subout1Or);
+     Or8Way(in=subout2, out=subout2Or);
+     Or(a=subout1Or, b=subout2Or, out=sub1Orsub2);
+     Not(in=sub1Orsub2, out=zr);
+
+     // ng
+     And16(a[0..7]=subout1, a[8..15]=subout2, b=true, out[15]=ng);
+     
+     And(a=instruction[8], b=instruction[7], out=load);
+     Mux16(a=reShift, b=outALU, sel=load,out[0..7]=subout1, out[8..15]=subout2, out=out);
+}
