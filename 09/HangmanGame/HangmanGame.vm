@@ -1,0 +1,170 @@
+function HangmanGame.new 0
+push constant 3
+call Memory.alloc 1
+pop pointer 0
+call Board.new 0
+pop this 2
+push constant 0
+pop this 1
+push constant 6
+pop this 0
+push pointer 0
+return
+function HangmanGame.is_winner 0
+push argument 0
+pop pointer 0
+push this 0
+push this 1
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+not
+return
+label IF_FALSE0
+push constant 0
+return
+function HangmanGame.is_lost 0
+push argument 0
+pop pointer 0
+push this 0
+push constant 0
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+not
+return
+label IF_FALSE0
+push constant 0
+return
+function HangmanGame.reduce_guesses_num 0
+push argument 0
+pop pointer 0
+push this 0
+push constant 1
+sub
+pop this 0
+push constant 0
+return
+function HangmanGame.increse_correct_guess_num 0
+push argument 0
+pop pointer 0
+push this 1
+push constant 1
+add
+pop this 1
+push constant 0
+return
+function HangmanGame.draw_winner 1
+push argument 0
+pop pointer 0
+push constant 0
+return
+function HangmanGame.draw_lost 1
+push argument 0
+pop pointer 0
+push constant 0
+return
+function HangmanGame.run 2
+push argument 0
+pop pointer 0
+push constant 0
+pop local 1
+push this 2
+call Board.draw_title 1
+pop temp 0
+push this 2
+call Board.draw_hanger 1
+pop temp 0
+push this 2
+call Board.draw_words_lines 1
+pop temp 0
+push this 2
+call Board.draw_frame 1
+pop temp 0
+push this 2
+push this 0
+call Board.draw_number_of_guesses 2
+pop temp 0
+label WHILE_EXP0
+push local 1
+not
+not
+if-goto WHILE_END0
+call Keyboard.readChar 0
+pop local 0
+push local 0
+push constant 81
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+not
+pop local 1
+label IF_FALSE0
+push this 2
+push local 0
+call Board.is_correct_guess 2
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push pointer 0
+call HangmanGame.increse_correct_guess_num 1
+pop temp 0
+push pointer 0
+call HangmanGame.is_winner 1
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push pointer 0
+call HangmanGame.draw_winner 1
+pop temp 0
+push constant 0
+not
+pop local 1
+label IF_FALSE2
+goto IF_END1
+label IF_FALSE1
+push pointer 0
+call HangmanGame.reduce_guesses_num 1
+pop temp 0
+push this 2
+push this 0
+call Board.update_drawing_board 2
+pop temp 0
+push this 2
+push this 0
+call Board.draw_number_of_guesses 2
+pop temp 0
+push pointer 0
+call HangmanGame.is_lost 1
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push pointer 0
+call HangmanGame.draw_lost 1
+pop temp 0
+push constant 0
+not
+pop local 1
+label IF_FALSE3
+label IF_END1
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return
+function HangmanGame.dispose 0
+push argument 0
+pop pointer 0
+push this 2
+call Board.dispose 1
+pop temp 0
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return

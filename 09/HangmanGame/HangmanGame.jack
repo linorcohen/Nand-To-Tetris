@@ -1,0 +1,99 @@
+
+
+class HangmanGame {
+
+    field int number_of_guesses_left;
+    field int number_of_correct_guesses;
+    field Board board;
+
+    /** Constructs a new HangmanGame. */
+    constructor HangmanGame new() {
+        let board = Board.new();
+        let number_of_correct_guesses = 0;
+        let number_of_guesses_left = 6;
+        return this;
+    }
+
+
+    method boolean is_winner(){
+        if (number_of_guesses_left = number_of_correct_guesses){
+            return true;
+        }
+        return false;
+    }
+
+    method boolean is_lost(){
+    if (number_of_guesses_left = 0){
+            return true;
+        }
+        return false;
+    }
+
+    method void reduce_guesses_num(){
+        let number_of_guesses_left = number_of_guesses_left-1;
+        return;
+    }
+
+    method void increse_correct_guess_num(){
+        let number_of_correct_guesses = number_of_correct_guesses + 1;
+        return;
+    }
+
+    method void draw_winner(){
+        var String winner_string;
+        return;
+    }
+
+    method void draw_lost(){
+        var String lose_string;
+        return;
+    }
+
+
+    /** Runs the game: */
+    method void run(){
+        var char key;  // the key currently pressed by the user
+        var boolean exit;
+        let exit = false;
+
+        do board.draw_title();
+        do board.draw_hanger();
+        do board.draw_words_lines();
+        do board.draw_frame();
+        do board.draw_number_of_guesses(number_of_guesses_left);
+
+        while (~exit) {
+
+            let key = Keyboard.readChar();
+
+            if (key = 81)  { let exit = true; }    // q key
+
+            if (board.is_correct_guess(key)){
+                do increse_correct_guess_num();
+                if (is_winner()){
+                    do draw_winner();
+                    let exit = true;
+                }
+            }
+            else
+            {
+                do reduce_guesses_num();
+                do board.update_drawing_board(number_of_guesses_left);
+                do board.draw_number_of_guesses(number_of_guesses_left);
+                if (is_lost()){
+                    do draw_lost();
+                    let exit = true;
+                }
+            }
+        }
+        return;
+    }
+
+    /** Disposes this game. */
+    method void dispose() {
+        do board.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+
+}

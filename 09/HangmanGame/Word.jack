@@ -1,0 +1,29 @@
+
+
+class Word{
+
+  field String word;
+  field int cur_word_index;
+
+    /** Constructs a new word */
+    constructor Word new(){
+      	let word = "hangman";
+      	let cur_word_index = 0;
+	      return this;
+    }
+
+    method char get_next_letter_in_word(){
+      return word.charAt(cur_word_index);
+    }
+
+    method int get_word_length(){
+      return word.length();
+    }
+
+    /** Disposes this word */
+    method void dispose(){
+      do Memory.deAlloc(this);
+      return;
+    }
+
+}

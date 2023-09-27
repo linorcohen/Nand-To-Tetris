@@ -1,0 +1,132 @@
+
+class Board{
+
+    field Word word;
+
+    constructor Board new(){
+        let word = Word.new();
+        return this;
+    }
+
+    method boolean is_correct_guess(char letter){
+        if (word.get_next_letter_in_word() = letter){
+            return true;
+        }
+        return false;
+    }
+
+    method void update_drawing_board(int guess_num){
+        if (guess_num = 5){
+        do draw_man_head();
+        return;
+        }
+        if (guess_num = 4){
+        do draw_man_body();
+        return;
+        }
+        if (guess_num = 3){
+        do draw_man_right_arm();
+        return;
+        }
+        if (guess_num = 2){
+        do draw_man_left_arm();
+        return;
+        }
+        if (guess_num = 1){
+        do draw_man_right_leg();
+        return;
+        }
+        if (guess_num = 0){
+        do draw_man_left_leg();
+        return;
+        }
+	return;
+    }
+
+    method void draw_title(){
+	return;
+    }
+
+    method void draw_frame(){
+    do Screen.setColor(true);
+    do Screen.drawRectangle(0,0,511,2);
+    do Screen.drawRectangle(0,253,511,255);
+    return;
+    }
+
+    method void draw_hanger(){
+        do Screen.setColor(true);
+        do Screen.drawRectangle(440,80,450,200);
+        do Screen.drawRectangle(350,80,450,90);
+        do Screen.drawRectangle(420,200,470,210);
+        do Screen.drawLine(350,80,350,110);
+        return;
+    }
+
+    method void draw_number_of_guesses(int guess_num){
+        return;
+    }
+
+    method void erase_num_of_guesses(){
+        return;
+    }
+
+    method void draw_words_lines(){
+    var int i, x;
+    let i = 0;
+    let x = 50;
+    while( i < word.get_word_length())
+            {
+                do Screen.drawRectangle(x, 200, x+20, 205);
+                let i = i+1;
+                let x = x+25;
+            }
+	    return;
+    }
+
+    method void draw_man_head(){
+        do Screen.setColor(true);
+        do Screen.drawCircle(350,120,8);
+        return;
+    }
+
+    method void draw_man_body(){
+        do Screen.setColor(true);
+        do Screen.drawRectangle(347,130,352,180);
+        return;
+    }
+
+    method void draw_man_right_arm(){
+        do Screen.setColor(true);
+        do Screen.drawRectangle(352,140,375,145);
+        return;
+    }
+
+    method void draw_man_left_arm(){
+        do Screen.setColor(true);
+        do Screen.drawRectangle(324,140,347,145);
+        return;
+    }
+
+    method void draw_man_right_leg(){
+        do Screen.setColor(true);
+        do Screen.drawRectangle(352,175,370,180);
+        do Screen.drawRectangle(365,170,370,180);
+        return;
+    }
+
+    method void draw_man_left_leg(){
+        do Screen.setColor(true);
+        do Screen.drawRectangle(329,175,347,180);
+        do Screen.drawRectangle(329,170,334,180);
+        return;
+    }
+
+   method void dispose() {
+        do word.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+
+
+}

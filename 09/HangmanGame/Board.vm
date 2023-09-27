@@ -1,0 +1,311 @@
+function Board.new 0
+push constant 1
+call Memory.alloc 1
+pop pointer 0
+call Word.new 0
+pop this 0
+push pointer 0
+return
+function Board.is_correct_guess 0
+push argument 0
+pop pointer 0
+push this 0
+call Word.get_next_letter_in_word 1
+push argument 1
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+not
+return
+label IF_FALSE0
+push constant 0
+return
+function Board.update_drawing_board 0
+push argument 0
+pop pointer 0
+push argument 1
+push constant 5
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push pointer 0
+call Board.draw_man_head 1
+pop temp 0
+push constant 0
+return
+label IF_FALSE0
+push argument 1
+push constant 4
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push pointer 0
+call Board.draw_man_body 1
+pop temp 0
+push constant 0
+return
+label IF_FALSE1
+push argument 1
+push constant 3
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push pointer 0
+call Board.draw_man_right_arm 1
+pop temp 0
+push constant 0
+return
+label IF_FALSE2
+push argument 1
+push constant 2
+eq
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push pointer 0
+call Board.draw_man_left_arm 1
+pop temp 0
+push constant 0
+return
+label IF_FALSE3
+push argument 1
+push constant 1
+eq
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+push pointer 0
+call Board.draw_man_right_leg 1
+pop temp 0
+push constant 0
+return
+label IF_FALSE4
+push argument 1
+push constant 0
+eq
+if-goto IF_TRUE5
+goto IF_FALSE5
+label IF_TRUE5
+push pointer 0
+call Board.draw_man_left_leg 1
+pop temp 0
+push constant 0
+return
+label IF_FALSE5
+push constant 0
+return
+function Board.draw_title 0
+push argument 0
+pop pointer 0
+push constant 0
+return
+function Board.draw_frame 0
+push argument 0
+pop pointer 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push constant 0
+push constant 0
+push constant 511
+push constant 2
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+push constant 253
+push constant 511
+push constant 255
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+return
+function Board.draw_hanger 0
+push argument 0
+pop pointer 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push constant 440
+push constant 80
+push constant 450
+push constant 200
+call Screen.drawRectangle 4
+pop temp 0
+push constant 350
+push constant 80
+push constant 450
+push constant 90
+call Screen.drawRectangle 4
+pop temp 0
+push constant 420
+push constant 200
+push constant 470
+push constant 210
+call Screen.drawRectangle 4
+pop temp 0
+push constant 350
+push constant 80
+push constant 350
+push constant 110
+call Screen.drawLine 4
+pop temp 0
+push constant 0
+return
+function Board.draw_number_of_guesses 0
+push argument 0
+pop pointer 0
+push constant 0
+return
+function Board.draw_words_lines 2
+push argument 0
+pop pointer 0
+push constant 0
+pop local 0
+push constant 50
+pop local 1
+label WHILE_EXP0
+push local 0
+push this 0
+call Word.get_word_length 1
+lt
+not
+if-goto WHILE_END0
+push local 1
+push constant 200
+push local 1
+push constant 20
+add
+push constant 205
+call Screen.drawRectangle 4
+pop temp 0
+push local 0
+push constant 1
+add
+pop local 0
+push local 1
+push constant 25
+add
+pop local 1
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return
+function Board.draw_man_head 0
+push argument 0
+pop pointer 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push constant 350
+push constant 120
+push constant 8
+call Screen.drawCircle 3
+pop temp 0
+push constant 0
+return
+function Board.draw_man_body 0
+push argument 0
+pop pointer 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push constant 347
+push constant 130
+push constant 352
+push constant 180
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+return
+function Board.draw_man_right_arm 0
+push argument 0
+pop pointer 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push constant 352
+push constant 140
+push constant 375
+push constant 145
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+return
+function Board.draw_man_left_arm 0
+push argument 0
+pop pointer 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push constant 324
+push constant 140
+push constant 347
+push constant 145
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+return
+function Board.draw_man_right_leg 0
+push argument 0
+pop pointer 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push constant 352
+push constant 175
+push constant 370
+push constant 180
+call Screen.drawRectangle 4
+pop temp 0
+push constant 365
+push constant 170
+push constant 370
+push constant 180
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+return
+function Board.draw_man_left_leg 0
+push argument 0
+pop pointer 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push constant 329
+push constant 175
+push constant 347
+push constant 180
+call Screen.drawRectangle 4
+pop temp 0
+push constant 329
+push constant 170
+push constant 334
+push constant 180
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+return
+function Board.dispose 0
+push argument 0
+pop pointer 0
+push this 0
+call Word.dispose 1
+pop temp 0
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return
