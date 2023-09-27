@@ -1,0 +1,22 @@
+    def __boolean_commands(self, command: str) -> str:
+        """
+        returns the assembly code for lt,gt or eq VM command.
+        :param command: (str) an lt,gt or eq command.
+        :return: assembly code translation of the command
+        """
+        self.counter += 1
+        return """{sub}@TRUE_{command}_{i}
+        D;{command_jmp}
+        @SP
+        A=M-1
+        M=0
+        @{command}_{i}
+        0;JMP
+
+        (TRUE_{command}_{i})
+        @SP
+        A=M-1
+        M=-1
+        ({command}_{i})
+        """.format(sub=self.__sub_add_commands("sub"), command=command.upper(),
+                   command_jmp=self.jmp_table[command], i=self.counter)
