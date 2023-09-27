@@ -1,0 +1,32 @@
+// swap:
+
+//temp = array[0]
+@R14
+A=M
+D=M
+@R0
+M=D
+// array[0] = array[array.length]
+@R15
+D=M-1
+@R14
+A=D+M
+D=M
+@R14
+A=M
+M=D
+// array[array.length] = temp
+@R15
+D=M-1
+@R14
+D=D+M
+@R1
+M=D
+@R0
+D=M
+@R1
+A=M
+M=D
+
+@END
+0;JMP
